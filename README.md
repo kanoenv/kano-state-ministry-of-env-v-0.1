@@ -1,91 +1,75 @@
-🌿 Kano State Ministry of Environment and Climate Change – Official Web Project
-🛠️ Project Info
-Project Title: Kano State Ministry of Environment and Climate Change, Kano
-Live URL: https://knenvaronment.netlify.app
-Status: Actively Maintained
-Sponsored By: Kano State Ministry of Environment and Climate Change, Kano
-Developed By: Harisu Abdulkadir Sulaiman
+# 🌿 Kano State Ministry of Environment and Climate Change – Official Web Project
 
-🧩 Technologies Used
-This web application is built using a modern, performant, and developer-friendly stack:
+## 🛠️ Project Info
+- **Project Title:** Kano State Ministry of Environment and Climate Change, Kano  
+- **Live URL:** [https://knenvaronment.netlify.app](https://knenvaronment.netlify.app)  
+- **Status:** Actively Maintained  
+- **Sponsored By:** Kano State Ministry of Environment and Climate Change, Kano  
+- **Developed By:** Harisu Abdulkadir Sulaiman  
 
-Vite – Lightning-fast development tooling
+---
 
-React – Component-based UI library
+## 🔐 Privacy and Usage Notice
 
-TypeScript – Typed JavaScript for better maintainability
+> 🚫 **Unauthorized Use Strictly Prohibited**
 
-Tailwind CSS – Utility-first CSS framework
+This project and its source code are **private and protected**.  
+**No individual, group, or organization is allowed to:**
+- Copy  
+- Modify  
+- Reuse  
+- Redistribute  
+- Host  
+- Clone  
+**this code or any of its parts without the developer’s written consent.**
 
-shadcn/ui – Modern UI component library
+Violations of this notice will be considered a breach of intellectual property rights and are subject to legal consequences.
 
-🔧 How to Run the Project Locally
-To run the project on your machine:
+> 🔒 **This is not an open-source project.**  
+For official use only by the Kano State Ministry of Environment and Climate Change and authorized parties.
 
-Prerequisites
-Node.js & npm installed (Install via nvm)
+---
 
-Steps
-bash
-Copy
-Edit
-# 1. Clone the repository
-git clone https://github.com/hareesdevkano/YOUR_REPO_NAME
+## 🧩 Technologies Used
 
-# 2. Move into the project directory
-cd YOUR_REPO_NAME
+This official website is built using the following modern and developer-friendly technologies:
 
-# 3. Install dependencies
-npm install
+- ⚡ **Vite** – Lightning-fast development environment  
+- ⚛️ **React** – Component-based UI library  
+- 🟦 **TypeScript** – Type-safe JavaScript  
+- 🎨 **Tailwind CSS** – Utility-first CSS framework  
+- 🧱 **shadcn/ui** – Headless and accessible UI components  
 
-# 4. Start the development server
-npm run dev
-Visit http://localhost:5173 (or as specified) in your browser to preview the app.
+---
 
-✏️ How to Edit or Contribute
-You can edit this project through any of the following methods:
+## 🌐 Deployment Details (Internal Use Only)
 
-🖥️ Local Development
-Use VS Code or any IDE of your choice to edit and push changes.
+- Hosted on **Netlify** with automatic deployments from a private GitHub repository.  
+- DNS and domain routing managed per Netlify instructions.
 
-🧑‍💻 GitHub Web Interface
-Navigate to the file on GitHub.
+For DNS management, deployment access, or maintenance:  
+> 🔐 Contact the developer: [hareesabdulkadir@gmail.com](mailto:hareesabdulkadir@gmail.com)
 
-Click the “Edit” (🖉) icon.
+---
 
-Make your changes and commit.
+## 📞 Contact Information
 
-💻 GitHub Codespaces (Browser IDE)
-Go to your repo on GitHub.
+For official inquiries, partnership, or collaboration, contact:
 
-Click on Code > Codespaces tab.
+- 👤 **Name:** Harisu Abdulkadir Sulaiman  
+- 📧 **Email:** [hareesabdulkadir@gmail.com](mailto:hareesabdulkadir@gmail.com)  
+- 📞 **Phone:** +234 907 373 3790 / +234 916 635 8735  
+- 💻 **GitHub:** [https://github.com/hareesdevkano](https://github.com/hareesdevkano)
 
-Launch a new Codespace.
+---
 
-Make changes and commit directly in the browser.
+## 🤝 Acknowledgment
 
-🌐 Deployment Instructions
-To deploy or redeploy the site:
+This project is proudly **sponsored** by the  
+**Kano State Ministry of Environment and Climate Change.**
 
-Connect to Netlify or another platform like Vercel, Render, etc.
+It serves as the **official digital platform** to support and manage the state's environmental activities, public awareness, programs, and campaigns.
 
-Push changes to your GitHub repository.
+Developed with precision, privacy, and performance in mind.
 
-Netlify will automatically detect changes and deploy.
-
-To link a custom domain, follow your hosting platform’s DNS instructions.
-
-📞 Contact Information
-If you have suggestions, inquiries, or wish to collaborate, reach out:
-
-👤 Name: Harisu Abdulkadir Sulaiman
-
-📧 Email: hareesabdulkadir@gmail.com
-
-📞 Phone: +234 907 373 3790 / +234 916 635 8735
-
-💻 GitHub: https://github.com/hareesdevkano
-
-🤝 Acknowledgment
-This project is proudly sponsored by the Kano State Ministry of Environment and Climate Change and developed to serve as the official digital platform for environmental initiatives in Kano State.
-
+---
