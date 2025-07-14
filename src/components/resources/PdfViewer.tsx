@@ -62,7 +62,7 @@ const PdfViewer = () => {
     {
       id: 'local-1',
       title: 'Environmental Regulations - Hausa Translation',
-      description: 'Complete environmental protection regulations translated into Hausa language for enhanced accessibility. This document provides comprehensive guidelines on environmental conservation, pollution control measures, and sustainable development practices specifically designed for local communities in Kano State.',
+      description: 'Hausa translation of Kano State’s environmental regulations, with clear guidelines on conservation, pollution control, and sustainable development tailored for local communities.',
       file_url: '/lovable-uploads/REGULATIONS - HAUSA 2.pdf',
       file_name: 'REGULATIONS - HAUSA 2.pdf',
       file_size: '2.8 MB',
@@ -76,7 +76,7 @@ const PdfViewer = () => {
     {
       id: 'local-2',
       title: 'Environmental Pollution Control Law 2022',
-      description: 'Comprehensive legal framework governing environmental pollution control measures in Kano State. This law establishes stringent standards for industrial emissions, waste management protocols, enforcement mechanisms, and penalties for environmental violations to ensure sustainable environmental protection.',
+      description: 'A legal framework for pollution control in Kano State, setting strict standards for industrial emissions, waste management, and penalties for violations to support sustainable environmental protection.',
       file_url: '/lovable-uploads/ENVIRONMENTAL POLLUTION CONTROL LAW, 2022.pdf',
       file_name: 'ENVIRONMENTAL POLLUTION CONTROL LAW, 2022.pdf',
       file_size: '3.2 MB',
@@ -90,7 +90,7 @@ const PdfViewer = () => {
     {
       id: 'local-3',
       title: 'Environmental Pollution and Waste Control Regulations 2025',
-      description: 'Updated comprehensive regulations for environmental pollution prevention and waste management control. This document outlines modern standards for industrial waste disposal, recycling requirements, environmental impact assessments, and sustainable waste management practices for businesses and communities.',
+      description: 'Modern standards for pollution prevention, industrial waste, and sustainable recycling practices in communities and businesses Accros Kano State.',
       file_url: '/lovable-uploads/ENVIRONMENTAL POLLUTION AND WASTE CONTROL REGULATIONS, 2025.pdf',
       file_name: 'ENVIRONMENTAL POLLUTION AND WASTE CONTROL REGULATIONS, 2025.pdf',
       file_size: '4.1 MB',
@@ -103,8 +103,8 @@ const PdfViewer = () => {
     },
     {
       id: 'local-4',
-      title: 'Environmental Protection and Community Development Law 2022',
-      description: 'Foundational environmental protection law establishing comprehensive framework for community development and environmental conservation in Kano State. This legislation integrates environmental protection with sustainable community development, outlining standards for green infrastructure and eco-friendly development practices.',
+      title: ' FASSARAR DOKAR KULA DA GURƁATAR MUHALLI TA JIHAR KANO TA SHEKARAR 2022',
+      description: 'Doka ce da ke taimakawa rage gurɓatar muhalli da bunƙasa cigaban al’umma cikin tsari mai ɗorewa.',
       file_url: '/lovable-uploads/DOKAR KULA DA GURƁATAR MUHALLI TA JIHAR KANO TA SHEKARAR 2022.pdf',
       file_name: 'DOKAR KULA DA GURƁATAR MUHALLI TA JIHAR KANO TA SHEKARAR 2022.pdf',
       file_size: '2.5 MB',

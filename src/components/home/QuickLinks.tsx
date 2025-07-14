@@ -16,7 +16,8 @@ const QuickLinks = () => {
       borderColor: "border-red-200/30",
       buttonColor: "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800",
       href: "/report-issue",
-      badge: "Critical"
+      badge: "Critical",
+      badgeColor: "bg-red-600"
     },
     {
       title: "Forest Conservation Initiative",
@@ -27,7 +28,8 @@ const QuickLinks = () => {
       borderColor: "border-emerald-200/30",
       buttonColor: "bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800",
       href: "/programs/five-million-trees",
-      badge: "Active"
+      badge: "Active",
+      badgeColor: "bg-emerald-600"
     },
     {
       title: "Climate Resilience Hub",
@@ -38,7 +40,8 @@ const QuickLinks = () => {
       borderColor: "border-blue-200/30",
       buttonColor: "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800",
       href: "/get-involved",
-      badge: "Innovation"
+      badge: "Innovation",
+      badgeColor: "bg-blue-600"
     },
     {
       title: "Environmental Analytics",
@@ -49,7 +52,8 @@ const QuickLinks = () => {
       borderColor: "border-purple-200/30",
       buttonColor: "bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800",
       href: "/monitoring",
-      badge: "Analytics"
+      badge: "Analytics",
+      badgeColor: "bg-purple-600"
     },
     {
       title: "Air Quality Excellence",
@@ -60,7 +64,8 @@ const QuickLinks = () => {
       borderColor: "border-cyan-200/30",
       buttonColor: "bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800",
       href: "/monitoring/air-quality",
-      badge: "Health"
+      badge: "Health",
+      badgeColor: "bg-cyan-600"
     },
     {
       title: "Regulatory Excellence",
@@ -71,7 +76,8 @@ const QuickLinks = () => {
       borderColor: "border-indigo-200/30",
       buttonColor: "bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800",
       href: "/resources",
-      badge: "Policy"
+      badge: "Policy",
+      badgeColor: "bg-indigo-600"
     }
   ];
 
@@ -137,19 +143,20 @@ const QuickLinks = () => {
                 
                 <CardContent className="p-4 md:p-5 lg:p-6 relative">
                   <div className="flex flex-col items-start text-left">
-                    {/* Professional Icon Container - Responsive sizing with larger desktop icons */}
+                    {/* Professional Icon Container - Mobile responsive sizing */}
                     <div className="relative mb-3 md:mb-4">
                       <div className={`relative p-2 md:p-3 lg:p-4 rounded-xl ${action.bgColor} border-2 ${action.borderColor} group-hover:scale-105 transition-all duration-400 shadow-lg`}>
-                        <IconComponent className={`w-4 h-4 md:w-5 md:h-5 lg:w-16 lg:h-16 ${action.color}`} strokeWidth={1.5} />
+                        <IconComponent className={`w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 ${action.color}`} strokeWidth={1.5} />
                         <div className={`absolute inset-0 rounded-xl ${action.color.replace('text-', 'bg-')}/8 group-hover:${action.color.replace('text-', 'bg-')}/15 transition-colors duration-400`}></div>
                       </div>
-                      {/* Refined Badge */}
-                      <div className={`absolute -top-1 -right-1 px-2 py-0.5 ${action.buttonColor.split(' ')[0]} text-white text-xs font-bold rounded-full shadow-md`}>
-                        {action.badge}
+                      {/* Mobile Responsive Badge */}
+                      <div className={`absolute -top-1 -right-1 sm:-top-2 sm:-right-2 px-2 py-1 sm:px-3 sm:py-1.5 ${action.badgeColor} text-white text-xs font-bold rounded-full shadow-lg ring-1 ring-white sm:ring-2 flex items-center gap-1 sm:gap-1.5`}>
+                        <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-white rounded-full animate-pulse"></div>
+                        <span className="text-xs sm:text-sm">{action.badge}</span>
                       </div>
                     </div>
                     
-                    {/* Professional Content - Smaller text for Desktop/Tablet */}
+                    {/* Professional Content - Mobile responsive text */}
                     <h3 className="font-black text-base md:text-lg lg:text-xl text-gray-900 mb-2 md:mb-3 group-hover:text-gray-800 transition-colors duration-300 leading-tight">
                       {action.title}
                     </h3>
@@ -157,7 +164,7 @@ const QuickLinks = () => {
                       {action.description}
                     </p>
                     
-                    {/* Professional CTA Button - Smaller for Desktop/Tablet */}
+                    {/* Professional CTA Button - Mobile responsive */}
                     <Button 
                       asChild
                       className={`w-full font-bold text-xs md:text-sm py-2 md:py-3 px-3 md:px-4 rounded-lg transition-all duration-400 ${action.buttonColor} text-white border-0 shadow-lg hover:shadow-xl group/btn overflow-hidden relative`}
@@ -175,16 +182,16 @@ const QuickLinks = () => {
           })}
         </div>
 
-        {/* Professional Bottom Section - Smaller for Desktop/Tablet */}
+        {/* Professional Bottom Section - Mobile responsive */}
         <div className="text-center mt-10 md:mt-12 lg:mt-16">
           <div className="inline-flex items-center gap-3 md:gap-4 text-gray-500 text-sm md:text-base font-medium">
-            <div className="w-12 md:w-16 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
-            <div className="px-4 md:px-6 py-2 md:py-3 bg-white/70 backdrop-blur-lg rounded-full border border-gray-200/50 shadow-lg">
+            <div className="w-8 md:w-12 lg:w-16 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+            <div className="px-3 md:px-4 lg:px-6 py-2 md:py-3 bg-white/70 backdrop-blur-lg rounded-full border border-gray-200/50 shadow-lg">
               <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent font-bold text-xs md:text-sm">
                 Empowering Kano State's Environmental Excellence
               </span>
             </div>
-            <div className="w-12 md:w-16 h-px bg-gradient-to-l from-transparent via-gray-300 to-transparent"></div>
+            <div className="w-8 md:w-12 lg:w-16 h-px bg-gradient-to-l from-transparent via-gray-300 to-transparent"></div>
           </div>
         </div>
       </div>
