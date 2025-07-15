@@ -88,7 +88,7 @@ const Reports = () => {
       report.reporter_name.toLowerCase().includes(searchQuery.toLowerCase());
     
     const matchesStatus = statusFilter === 'all' || report.status.toLowerCase().replace(' ', '') === statusFilter.toLowerCase();
-    const matchesType = typeFilter === 'all' || report.type.toLowerCase() === typeFilter.toLowerCase();
+    const matchesType = typeFilter === 'all' || report.type.toLowerCase().replace(/\s+/g, '') === typeFilter.toLowerCase();
     
     return matchesSearch && matchesStatus && matchesType;
   });
@@ -212,8 +212,8 @@ const Reports = () => {
     }
   };
 
-  // Get unique report types for filter
-  const reportTypes = Array.from(new Set(reports.map(r => r.type))).sort();
+  // Get unique report types for filter - ensure no empty values
+  const reportTypes = Array.from(new Set(reports.map(r => r.type).filter(type => type && type.trim() !== ''))).sort();
   
   return (
     <AdminLayout>
@@ -331,9 +331,14 @@ const Reports = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Types</SelectItem>
-                    {reportTypes.map(type => (
-                      <SelectItem key={type} value={type.toLowerCase()}>{type}</SelectItem>
-                    ))}
+                    {reportTypes.map(type => {
+                      const sanitizedValue = type.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') || 'unknown';
+                      return (
+                        <SelectItem key={type} value={sanitizedValue}>
+                          {type}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
               </div>
