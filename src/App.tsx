@@ -37,6 +37,7 @@ import ContentManagement from "./pages/admin/ContentManagement";
 import AdminAirQuality from "./pages/admin/AirQuality";
 import Recruitment from "./pages/admin/Recruitment";
 import TreeCampaignApplications from "./pages/admin/TreeCampaignApplications";
+import ClimateActorManagement from "./pages/admin/ClimateActorManagement";
 import AdminManagement from "./pages/admin/AdminManagement";
 import ProgramManagement from "./pages/admin/ProgramManagement";
 import CareerManagement from "./pages/admin/CareerManagement";
@@ -48,6 +49,10 @@ import MonitoringAirQuality from "./pages/monitoring/AirQuality";
 import WaterQuality from "./pages/monitoring/WaterQuality";
 import ErosionMaps from "./pages/monitoring/ErosionMaps";
 import TreePlanting from "./pages/monitoring/TreePlanting";
+import ClimateActorRegistry from "./pages/ClimateActorRegistry";
+import ClimateActorRegister from "./pages/ClimateActorRegister";
+import OrganizationLogin from "./pages/OrganizationLogin";
+import OrganizationDashboard from "./pages/OrganizationDashboard";
 import AgenciesOverview from "./pages/agencies/AgenciesOverview";
 import Afforestation from "./pages/agencies/Afforestation";
 import RenewableEnergy from "./pages/agencies/RenewableEnergy";
@@ -151,6 +156,12 @@ const AppRoutes = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/report-issue" element={<ReportIssue />} />
         
+        {/* Climate Actor Registry Routes */}
+        <Route path="/climate-actor-registry" element={<ClimateActorRegistry />} />
+        <Route path="/climate-actor-register" element={<ClimateActorRegister />} />
+        <Route path="/organization-login" element={<OrganizationLogin />} />
+        <Route path="/organization-dashboard" element={<OrganizationDashboard />} />
+        
         {/* Air Quality Route - NEW */}
         <Route path="/air-quality" element={<AirQuality />} />
         
@@ -204,6 +215,7 @@ const AppRoutes = () => {
         <Route path="/admin/tree-campaign" element={<ProtectedRoute><TreeCampaignApplications /></ProtectedRoute>} />
         <Route path="/admin/users" element={<ProtectedRoute><AdminManagement /></ProtectedRoute>} />
         <Route path="/admin/pdfs" element={<ProtectedRoute><PdfManagementPage /></ProtectedRoute>} />
+        <Route path="/admin/climate-actors" element={<ProtectedRoute><ClimateActorManagement /></ProtectedRoute>} />
         
         {/* Catch-all Route */}
         <Route path="*" element={<CatchAllRoute />} />
