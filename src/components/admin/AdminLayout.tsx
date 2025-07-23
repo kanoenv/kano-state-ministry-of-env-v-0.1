@@ -10,6 +10,7 @@ import {
   Users, 
   UserCheck,
   TreePine,
+  Building2,
   LogOut,
   Menu,
   X,
@@ -75,6 +76,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     { path: '/admin/air-quality', label: 'Air Quality', icon: Wind },
     { path: '/admin/recruitment', label: 'Recruitment', icon: UserCheck },
     { path: '/admin/tree-campaign', label: 'Tree Campaign', icon: TreePine },
+    { path: '/admin/climate-actors', label: 'Climate Actors', icon: Building2 },
     { path: '/admin/users', label: 'Admin Users', icon: Users },
   ];
 
