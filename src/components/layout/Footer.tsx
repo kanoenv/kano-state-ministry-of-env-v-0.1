@@ -114,6 +114,12 @@ const Footer = () => {
                   <span>Report Issue</span>
                 </Link>
               </li>
+              <li>
+                <Link to="/climate-actor-registry" className="flex items-center text-slate-300 hover:text-emerald-400 transition-colors group">
+                  <Users size={16} className="mr-3 group-hover:scale-110 transition-transform" />
+                  <span>Climate-Actor Registry</span>
+                </Link>
+              </li>
             </ul>
           </div>
 
