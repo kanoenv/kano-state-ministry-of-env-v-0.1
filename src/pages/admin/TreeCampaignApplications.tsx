@@ -262,9 +262,16 @@ const TreeCampaignApplications = () => {
   
   return (
     <AdminLayout>
-      <div className="flex items-center gap-3 mb-6">
-        <TreePine className="w-8 h-8 text-green-600" />
-        <h1 className="text-3xl font-bold">Five Million Trees Campaign Applications</h1>
+      <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6 mb-8">
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl shadow-lg">
+            <TreePine className="w-8 h-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold text-foreground mb-1">Five Million Trees Campaign</h1>
+            <p className="text-muted-foreground">Manage and review tree planting applications</p>
+          </div>
+        </div>
       </div>
       
       <div className="mb-8">
