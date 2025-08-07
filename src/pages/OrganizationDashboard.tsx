@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import PasswordUpdateForm from "@/components/forms/PasswordUpdateForm";
 import { 
   LogOut, 
   Building2, 
@@ -19,7 +21,8 @@ import {
   Target,
   CheckCircle,
   Clock,
-  XCircle
+  XCircle,
+  Shield
 } from "lucide-react";
 
 interface Organization {
@@ -49,13 +52,24 @@ const OrganizationDashboard = () => {
   useEffect(() => {
     const loadOrganization = async () => {
       try {
+        console.log('Loading organization data...');
         const authData = localStorage.getItem('organizationAuth');
+        console.log('Auth data from localStorage:', authData);
+        
         if (!authData) {
+          console.log('No auth data found, redirecting to login');
           navigate('/organization-login');
           return;
         }
 
         const orgAuth = JSON.parse(authData);
+        console.log('Parsed auth data:', orgAuth);
+        
+        if (!orgAuth.id) {
+          console.log('No organization ID found, redirecting to login');
+          navigate('/organization-login');
+          return;
+        }
         
         // Fetch full organization details
         const { data, error } = await supabase
@@ -64,15 +78,28 @@ const OrganizationDashboard = () => {
           .eq('id', orgAuth.id)
           .single();
 
-        if (error) throw error;
+        console.log('Supabase response:', { data, error });
+
+        if (error) {
+          console.error('Error fetching organization:', error);
+          throw error;
+        }
         
+        if (!data) {
+          console.log('No organization data found');
+          throw new Error('Organization not found');
+        }
+        
+        console.log('Organization loaded successfully:', data);
         setOrganization(data);
       } catch (error: any) {
+        console.error('Error in loadOrganization:', error);
         toast({
           title: "Error",
-          description: "Failed to load organization data",
+          description: "Failed to load organization data. Please log in again.",
           variant: "destructive"
         });
+        localStorage.removeItem('organizationAuth');
         navigate('/organization-login');
       } finally {
         setLoading(false);
@@ -116,7 +143,16 @@ const OrganizationDashboard = () => {
   }
 
   if (!organization) {
-    return null;
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-muted-foreground">Organization not found. Please log in again.</p>
+          <Button onClick={() => navigate('/organization-login')} className="mt-4">
+            Go to Login
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -156,6 +192,7 @@ const OrganizationDashboard = () => {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="profile">Profile Details</TabsTrigger>
             <TabsTrigger value="status">Application Status</TabsTrigger>
+            <TabsTrigger value="security">Security</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -394,6 +431,30 @@ const OrganizationDashboard = () => {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="security" className="space-y-6">
+            <div className="grid grid-cols-1 max-w-2xl gap-6">
+              <PasswordUpdateForm organizationEmail={organization.contact_email} />
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Shield className="h-5 w-5" />
+                    <span>Security Best Practices</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="text-sm text-muted-foreground space-y-2">
+                    <p>• Use a unique password that you don't use for other accounts</p>
+                    <p>• Include a mix of uppercase, lowercase, numbers, and special characters</p>
+                    <p>• Avoid using personal information like names or dates</p>
+                    <p>• Consider using a password manager to generate and store strong passwords</p>
+                    <p>• Change your password if you suspect it has been compromised</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
