@@ -169,6 +169,80 @@ export type Database = {
           },
         ]
       }
+      climate_actors: {
+        Row: {
+          actor_type: string
+          approved_at: string | null
+          approved_by: string | null
+          contact_email: string
+          contact_name: string
+          contact_phone: string
+          created_at: string
+          description: string
+          focus_areas: string[]
+          id: string
+          lga_operations: string[]
+          logo_url: string | null
+          organization_name: string
+          password_hash: string
+          rejection_reason: string | null
+          status: string
+          updated_at: string
+          website_url: string | null
+          year_established: number | null
+        }
+        Insert: {
+          actor_type: string
+          approved_at?: string | null
+          approved_by?: string | null
+          contact_email: string
+          contact_name: string
+          contact_phone: string
+          created_at?: string
+          description: string
+          focus_areas: string[]
+          id?: string
+          lga_operations: string[]
+          logo_url?: string | null
+          organization_name: string
+          password_hash: string
+          rejection_reason?: string | null
+          status?: string
+          updated_at?: string
+          website_url?: string | null
+          year_established?: number | null
+        }
+        Update: {
+          actor_type?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          contact_email?: string
+          contact_name?: string
+          contact_phone?: string
+          created_at?: string
+          description?: string
+          focus_areas?: string[]
+          id?: string
+          lga_operations?: string[]
+          logo_url?: string | null
+          organization_name?: string
+          password_hash?: string
+          rejection_reason?: string | null
+          status?: string
+          updated_at?: string
+          website_url?: string | null
+          year_established?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "climate_actors_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "admin_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       content: {
         Row: {
           category: string | null
@@ -882,6 +956,10 @@ export type Database = {
         Args: { prefix?: string }
         Returns: string
       }
+      update_organization_password: {
+        Args: { org_email: string; old_password: string; new_password: string }
+        Returns: boolean
+      }
       verify_admin_login: {
         Args: { admin_email: string; admin_password: string }
         Returns: {
@@ -890,6 +968,16 @@ export type Database = {
           full_name: string
           role: Database["public"]["Enums"]["admin_role"]
           is_active: boolean
+        }[]
+      }
+      verify_organization_login: {
+        Args: { org_email: string; org_password: string }
+        Returns: {
+          id: string
+          organization_name: string
+          contact_email: string
+          status: string
+          approved_at: string
         }[]
       }
     }
