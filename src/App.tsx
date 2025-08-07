@@ -73,6 +73,9 @@ import PdfManagementPage from "./pages/admin/PdfManagement";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import Accessibility from "./pages/Accessibility";
+import AdminSetup from "./pages/AdminSetup";
+import ForestGuardApplications from "./pages/admin/ForestGuardApplications";
+import TreePlantingTracker from "./pages/admin/TreePlantingTracker";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -199,7 +202,8 @@ const AppRoutes = () => {
         <Route path="/careers/forest-guard/apply" element={<ForestGuardApply />} />
         <Route path="/careers/forest-guard/success" element={<ForestGuardSuccess />} />
         
-        {/* Admin Authentication Route */}
+        {/* Admin Authentication Routes */}
+        <Route path="/admin-setup" element={<AdminSetup />} />
         <Route path="/admin-login" element={<AuthRoute><AdminLogin /></AuthRoute>} />
         
         {/* Admin Routes */}
@@ -213,6 +217,8 @@ const AppRoutes = () => {
         <Route path="/admin/air-quality" element={<ProtectedRoute><AdminAirQuality /></ProtectedRoute>} />
         <Route path="/admin/recruitment" element={<ProtectedRoute><Recruitment /></ProtectedRoute>} />
         <Route path="/admin/tree-campaign" element={<ProtectedRoute><TreeCampaignApplications /></ProtectedRoute>} />
+        <Route path="/admin/forest-guard-applications" element={<ProtectedRoute><ForestGuardApplications /></ProtectedRoute>} />
+        <Route path="/admin/tree-planting-tracker" element={<ProtectedRoute><TreePlantingTracker /></ProtectedRoute>} />
         <Route path="/admin/users" element={<ProtectedRoute><AdminManagement /></ProtectedRoute>} />
         <Route path="/admin/pdfs" element={<ProtectedRoute><PdfManagementPage /></ProtectedRoute>} />
         <Route path="/admin/climate-actors" element={<ProtectedRoute><ClimateActorManagement /></ProtectedRoute>} />
