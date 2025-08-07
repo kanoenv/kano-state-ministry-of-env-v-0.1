@@ -9,82 +9,118 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 33 11% 13%;
+    --foreground: 215 25% 27%;
 
     --card: 0 0% 100%;
-    --card-foreground: 33 11% 13%;
+    --card-foreground: 215 25% 27%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 33 11% 13%;
+    --popover-foreground: 215 25% 27%;
 
-    --primary: 122 48% 33%;
+    --primary: 220 91% 56%;
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 122 50% 49%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 210 40% 98%;
+    --secondary-foreground: 222 84% 5%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 33 9% 46%;
+    --muted: 210 40% 98%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 43 100% 52%;
-    --accent-foreground: 33 11% 13%;
+    --accent: 210 40% 98%;
+    --accent-foreground: 222 84% 5%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 122 48% 33%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 220 91% 56%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Admin-specific tokens */
+    --admin-background: 220 27% 98%;
+    --admin-surface: 0 0% 100%;
+    --admin-surface-hover: 220 27% 96%;
+    --admin-surface-active: 220 91% 56%;
+    --admin-border: 220 13% 91%;
+    --admin-text-primary: 215 25% 27%;
+    --admin-text-secondary: 215 16% 47%;
+    --admin-text-accent: 220 91% 56%;
+    
+    /* Status colors */
+    --success: 142 76% 36%;
+    --success-foreground: 355 100% 97%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 48 96% 89%;
+    --info: 199 89% 48%;
+    --info-foreground: 210 40% 98%;
+
+    --sidebar-background: 222 84% 5%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 220 91% 56%;
+    --sidebar-primary-foreground: 222 84% 5%;
+    --sidebar-accent: 215 28% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 215 28% 17%;
+    --sidebar-ring: 220 91% 56%;
   }
 
   .dark {
-    --background: 33 11% 13%;
-    --foreground: 0 0% 98%;
+    --background: 222 84% 5%;
+    --foreground: 210 40% 98%;
 
-    --card: 33 11% 13%;
-    --card-foreground: 0 0% 98%;
+    --card: 222 84% 5%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 33 11% 13%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 222 84% 5%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 122 48% 33%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 220 91% 56%;
+    --primary-foreground: 222 84% 5%;
 
-    --secondary: 122 50% 49%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 33 9% 19%;
-    --muted-foreground: 33 9% 70%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 43 100% 52%;
-    --accent-foreground: 33 11% 13%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 33 9% 19%;
-    --input: 33 9% 19%;
-    --ring: 122 48% 33%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 220 91% 56%;
+
+    /* Admin-specific tokens */
+    --admin-background: 222 84% 5%;
+    --admin-surface: 217 33% 17%;
+    --admin-surface-hover: 215 28% 17%;
+    --admin-surface-active: 220 91% 56%;
+    --admin-border: 217 33% 17%;
+    --admin-text-primary: 210 40% 98%;
+    --admin-text-secondary: 215 20% 65%;
+    --admin-text-accent: 220 91% 56%;
     
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Status colors */
+    --success: 142 76% 36%;
+    --success-foreground: 355 100% 97%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 48 96% 89%;
+    --info: 199 89% 48%;
+    --info-foreground: 210 40% 98%;
+    
+    --sidebar-background: 222 84% 5%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 220 91% 56%;
+    --sidebar-primary-foreground: 222 84% 5%;
+    --sidebar-accent: 215 28% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 215 28% 17%;
+    --sidebar-ring: 220 91% 56%;
   }
 }
 
@@ -128,6 +164,51 @@
 }
 
 @layer components {
+  /* Admin-specific component styles */
+  .admin-card {
+    @apply bg-card border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-200;
+  }
+  
+  .admin-nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200;
+  }
+  
+  .admin-nav-item.active {
+    @apply bg-primary text-primary-foreground shadow-sm;
+  }
+  
+  .admin-nav-item:not(.active) {
+    @apply text-muted-foreground hover:text-foreground hover:bg-accent;
+  }
+  
+  .admin-stat-card {
+    @apply bg-card p-6 rounded-lg border border-border hover:shadow-md transition-all duration-200;
+  }
+  
+  .admin-metric {
+    @apply text-2xl font-semibold text-foreground;
+  }
+  
+  .admin-metric-label {
+    @apply text-sm text-muted-foreground;
+  }
+  
+  .admin-action-button {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200;
+  }
+  
+  .admin-action-button.primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+  
+  .admin-action-button.secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+  
+  .admin-action-button.outline {
+    @apply border border-border bg-background hover:bg-accent hover:text-accent-foreground;
+  }
+  
   .btn-primary {
     @apply bg-gradient-to-r from-kano-primary to-kano-secondary hover:from-kano-primary/90 hover:to-kano-secondary/90 text-white font-semibold py-3 px-6 md:py-4 md:px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105;
   }
