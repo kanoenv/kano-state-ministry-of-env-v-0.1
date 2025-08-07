@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
-import { Building, Shield, Leaf, Users, Settings, Globe, BarChart, ClipboardList, Building2, Megaphone, Trash2, Home, Info, FileText, Phone } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Building, Shield, Leaf, Users, Settings, Globe, BarChart, ClipboardList, Building2, Megaphone, Trash2, Home, Info, FileText, Phone, ChevronDown } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -75,46 +75,49 @@ const Navbar = () => {
             </Button>
             
             {/* Agencies Dropdown */}
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="bg-white text-kano-primary border-2 border-white hover:bg-kano-primary hover:text-white px-4 py-2 rounded-xl shadow-lg transition-all duration-300 text-sm font-semibold transform hover:scale-105 hover:shadow-xl data-[state=open]:bg-kano-primary data-[state=open]:text-white data-[state=open]:border-white flex items-center gap-2">
-                    <Building2 className="h-4 w-4" />
-                    Agencies
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent className="bg-white/98 backdrop-blur-sm shadow-2xl border-2 border-kano-primary/20 rounded-2xl p-6 w-96 z-50">
-                    <div className="space-y-4">
-                      {agencies.map((agency) => (
-                        <NavigationMenuLink key={agency.title} asChild>
-                          <Link 
-                            to={agency.href}
-                            className="flex items-start gap-4 p-4 rounded-xl hover:bg-gradient-to-r hover:from-kano-primary/5 hover:to-kano-secondary/5 transition-all duration-300 border-2 border-transparent hover:border-kano-primary/20 hover:shadow-lg group"
-                          >
-                            <div className="text-kano-primary mt-1 p-3 rounded-xl bg-kano-primary/10 group-hover:bg-kano-primary/20 transition-colors duration-300">
-                              {agency.icon}
-                            </div>
-                            <div>
-                              <h4 className="font-semibold text-gray-900 text-sm group-hover:text-kano-primary transition-colors duration-300">{agency.title}</h4>
-                              <p className="text-xs text-gray-600 mt-1 group-hover:text-gray-700 transition-colors duration-300">{agency.description}</p>
-                            </div>
-                          </Link>
-                        </NavigationMenuLink>
-                      ))}
-                      <div className="pt-4 border-t border-gray-100">
-                        <NavigationMenuLink asChild>
-                          <Link 
-                            to="/agencies"
-                            className="flex items-center justify-center gap-2 p-3 text-white bg-gradient-to-r from-kano-primary to-kano-secondary hover:from-kano-primary/90 hover:to-kano-secondary/90 font-semibold text-sm rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-                          >
-                            View All Agencies
-                          </Link>
-                        </NavigationMenuLink>
-                      </div>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="white"
+                  size="sm"
+                  className="group flex items-center gap-2"
+                >
+                  <Building2 className="h-4 w-4" />
+                  Agencies
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-white/98 backdrop-blur-sm shadow-2xl border-2 border-kano-primary/20 rounded-2xl p-4 w-80 z-50">
+                <div className="space-y-2">
+                  {agencies.map((agency) => (
+                    <DropdownMenuItem key={agency.title} asChild>
+                      <Link 
+                        to={agency.href}
+                        className="flex items-start gap-4 p-4 rounded-xl hover:bg-gradient-to-r hover:from-kano-primary/5 hover:to-kano-secondary/5 transition-all duration-300 border-2 border-transparent hover:border-kano-primary/20 hover:shadow-lg group w-full"
+                      >
+                        <div className="text-kano-primary mt-1 p-3 rounded-xl bg-kano-primary/10 group-hover:bg-kano-primary/20 transition-colors duration-300">
+                          {agency.icon}
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900 text-sm group-hover:text-kano-primary transition-colors duration-300">{agency.title}</h4>
+                          <p className="text-xs text-gray-600 mt-1 group-hover:text-gray-700 transition-colors duration-300">{agency.description}</p>
+                        </div>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                  <div className="pt-2 border-t border-gray-100">
+                    <DropdownMenuItem asChild>
+                      <Link 
+                        to="/agencies"
+                        className="flex items-center justify-center gap-2 p-3 text-white bg-gradient-to-r from-kano-primary to-kano-secondary hover:from-kano-primary/90 hover:to-kano-secondary/90 font-semibold text-sm rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-105 w-full"
+                      >
+                        View All Agencies
+                      </Link>
+                    </DropdownMenuItem>
+                  </div>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <Button 
               variant="white"
