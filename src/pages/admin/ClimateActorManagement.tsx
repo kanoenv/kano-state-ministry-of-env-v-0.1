@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import AdminLayout from '@/components/admin/AdminLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { 
@@ -22,7 +24,9 @@ import {
   Building2,
   Calendar,
   MapPin,
-  Target
+  Target,
+  Trash2,
+  Download
 } from "lucide-react";
 
 interface ClimateActor {
@@ -43,7 +47,7 @@ interface ClimateActor {
   rejection_reason: string | null;
 }
 
-const ClimateActorManagement = () => {
+const ClimateActorManagementContent = () => {
   const { toast } = useToast();
   const [actors, setActors] = useState<ClimateActor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -63,9 +67,15 @@ const ClimateActorManagement = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setActors(data);
+      if (error) {
+        console.error('Error loading actors:', error);
+        throw error;
+      }
+      
+      console.log('Loaded actors:', data);
+      setActors(data || []);
     } catch (error: any) {
+      console.error('Error in loadActors:', error);
       toast({
         title: "Error",
         description: "Failed to load climate actors",
@@ -79,27 +89,33 @@ const ClimateActorManagement = () => {
   const handleApprove = async (actorId: string) => {
     setActionLoading(true);
     try {
+      console.log('Approving actor:', actorId);
+      
       const { error } = await supabase
         .from('climate_actors')
         .update({ 
           status: 'approved',
           approved_at: new Date().toISOString(),
-          approved_by: 'admin' // You might want to get actual admin ID
+          rejection_reason: null
         })
         .eq('id', actorId);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error approving actor:', error);
+        throw error;
+      }
 
       toast({
         title: "Actor Approved",
         description: "Organization has been approved and added to the registry",
       });
 
-      loadActors();
+      await loadActors();
     } catch (error: any) {
+      console.error('Error in handleApprove:', error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to approve actor",
         variant: "destructive"
       });
     } finally {
@@ -119,15 +135,21 @@ const ClimateActorManagement = () => {
 
     setActionLoading(true);
     try {
+      console.log('Rejecting actor:', actorId, 'with reason:', rejectionReason);
+      
       const { error } = await supabase
         .from('climate_actors')
         .update({ 
           status: 'rejected',
-          rejection_reason: rejectionReason
+          rejection_reason: rejectionReason,
+          approved_at: null
         })
         .eq('id', actorId);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error rejecting actor:', error);
+        throw error;
+      }
 
       toast({
         title: "Actor Rejected",
@@ -135,16 +157,99 @@ const ClimateActorManagement = () => {
       });
 
       setRejectionReason('');
-      loadActors();
+      await loadActors();
     } catch (error: any) {
+      console.error('Error in handleReject:', error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to reject actor",
         variant: "destructive"
       });
     } finally {
       setActionLoading(false);
     }
+  };
+
+  const handleDelete = async (actorId: string) => {
+    setActionLoading(true);
+    try {
+      console.log('Deleting actor:', actorId);
+      
+      const { error } = await supabase
+        .from('climate_actors')
+        .delete()
+        .eq('id', actorId);
+
+      if (error) {
+        console.error('Error deleting actor:', error);
+        throw error;
+      }
+
+      toast({
+        title: "Organization Deleted",
+        description: "Organization has been permanently removed",
+      });
+
+      await loadActors();
+    } catch (error: any) {
+      console.error('Error in handleDelete:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete organization",
+        variant: "destructive"
+      });
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const exportToCSV = () => {
+    const headers = [
+      'Organization Name',
+      'Actor Type',
+      'Contact Name',
+      'Contact Email',
+      'Contact Phone',
+      'Status',
+      'Focus Areas',
+      'LGA Operations',
+      'Year Established',
+      'Created At',
+      'Approved At'
+    ];
+
+    const csvData = actors.map(actor => [
+      actor.organization_name,
+      actor.actor_type,
+      actor.contact_name,
+      actor.contact_email,
+      actor.contact_phone,
+      actor.status,
+      actor.focus_areas.join('; '),
+      actor.lga_operations.join('; '),
+      actor.year_established || '',
+      new Date(actor.created_at).toLocaleDateString(),
+      actor.approved_at ? new Date(actor.approved_at).toLocaleDateString() : ''
+    ]);
+
+    const csvContent = [headers, ...csvData]
+      .map(row => row.map(field => `"${field}"`).join(','))
+      .join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `climate-actors-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast({
+      title: "Export Successful",
+      description: "Climate actors data has been exported to CSV",
+    });
   };
 
   const getStatusBadge = (status: string) => {
@@ -182,11 +287,17 @@ const ClimateActorManagement = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Climate-Actor Management</h1>
-        <p className="text-muted-foreground">
-          Review and manage climate-actor registry applications
-        </p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold">Climate-Actor Management</h1>
+          <p className="text-muted-foreground">
+            Review and manage climate-actor registry applications
+          </p>
+        </div>
+        <Button onClick={exportToCSV} className="flex items-center gap-2">
+          <Download className="h-4 w-4" />
+          Export CSV
+        </Button>
       </div>
 
       {/* Stats Cards */}
@@ -362,7 +473,7 @@ const ClimateActorManagement = () => {
                                       className="flex-1"
                                     >
                                       <CheckCircle className="h-4 w-4 mr-2" />
-                                      Approve Application
+                                      {actionLoading ? 'Processing...' : 'Approve Application'}
                                     </Button>
                                     
                                     <div className="flex-1 space-y-2">
@@ -379,11 +490,40 @@ const ClimateActorManagement = () => {
                                         className="w-full"
                                       >
                                         <XCircle className="h-4 w-4 mr-2" />
-                                        Reject Application
+                                        {actionLoading ? 'Processing...' : 'Reject Application'}
                                       </Button>
                                     </div>
                                   </div>
                                 )}
+
+                                <div className="flex justify-end pt-4 border-t">
+                                  <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                      <Button variant="destructive" size="sm">
+                                        <Trash2 className="h-4 w-4 mr-2" />
+                                        Delete Organization
+                                      </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                      <AlertDialogHeader>
+                                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                          This action cannot be undone. This will permanently delete the organization
+                                          "{selectedActor.organization_name}" and all associated data.
+                                        </AlertDialogDescription>
+                                      </AlertDialogHeader>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction 
+                                          onClick={() => handleDelete(selectedActor.id)}
+                                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                        >
+                                          Delete
+                                        </AlertDialogAction>
+                                      </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                  </AlertDialog>
+                                </div>
 
                                 {selectedActor.rejection_reason && (
                                   <div className="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -395,6 +535,32 @@ const ClimateActorManagement = () => {
                             )}
                           </DialogContent>
                         </Dialog>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="destructive" size="sm">
+                              <Trash2 className="h-4 w-4 mr-1" />
+                              Delete
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete the organization
+                                "{actor.organization_name}" and all associated data.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction 
+                                onClick={() => handleDelete(actor.id)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </div>
                   </CardHeader>
@@ -402,7 +568,7 @@ const ClimateActorManagement = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                       <div className="flex items-center gap-2">
                         <Mail className="h-4 w-4 text-muted-foreground" />
-                        <span>{actor.contact_email}</span>
+                        <span className="truncate">{actor.contact_email}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Target className="h-4 w-4 text-muted-foreground" />
@@ -422,7 +588,7 @@ const ClimateActorManagement = () => {
                           disabled={actionLoading}
                         >
                           <CheckCircle className="h-4 w-4 mr-1" />
-                          Approve
+                          {actionLoading ? 'Processing...' : 'Approve'}
                         </Button>
                       </div>
                     )}
@@ -434,6 +600,14 @@ const ClimateActorManagement = () => {
         </TabsContent>
       </Tabs>
     </div>
+  );
+};
+
+const ClimateActorManagement = () => {
+  return (
+    <AdminLayout>
+      <ClimateActorManagementContent />
+    </AdminLayout>
   );
 };
 
