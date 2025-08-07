@@ -544,9 +544,9 @@ const Recruitment = () => {
               <div className="border-t pt-4">
                 <h4 className="font-medium text-lg mb-3">Uploaded Documents</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {selectedApplication.birth_certificate_url && (
-                    <div>
-                      <Label className="text-gray-500 text-sm">Birth Certificate / ID</Label>
+                  <div>
+                    <Label className="text-gray-500 text-sm">Birth Certificate / ID</Label>
+                    {selectedApplication.birth_certificate_url ? (
                       <Button 
                         variant="outline" 
                         size="sm" 
@@ -558,12 +558,16 @@ const Recruitment = () => {
                           View Document
                         </a>
                       </Button>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="mt-1 p-2 border border-dashed border-gray-300 rounded text-center text-sm text-gray-500">
+                        No document uploaded
+                      </div>
+                    )}
+                  </div>
                   
-                  {selectedApplication.education_certificate_url && (
-                    <div>
-                      <Label className="text-gray-500 text-sm">Education Certificate</Label>
+                  <div>
+                    <Label className="text-gray-500 text-sm">Education Certificate</Label>
+                    {selectedApplication.education_certificate_url ? (
                       <Button 
                         variant="outline" 
                         size="sm" 
@@ -575,12 +579,16 @@ const Recruitment = () => {
                           View Document
                         </a>
                       </Button>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="mt-1 p-2 border border-dashed border-gray-300 rounded text-center text-sm text-gray-500">
+                        No document uploaded
+                      </div>
+                    )}
+                  </div>
                   
-                  {selectedApplication.lga_letter_url && (
-                    <div>
-                      <Label className="text-gray-500 text-sm">LGA Letter</Label>
+                  <div>
+                    <Label className="text-gray-500 text-sm">LGA Letter</Label>
+                    {selectedApplication.lga_letter_url ? (
                       <Button 
                         variant="outline" 
                         size="sm" 
@@ -592,8 +600,33 @@ const Recruitment = () => {
                           View Document
                         </a>
                       </Button>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="mt-1 p-2 border border-dashed border-gray-300 rounded text-center text-sm text-gray-500">
+                        No document uploaded
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <Label className="text-gray-500 text-sm">Applicant Photo</Label>
+                    {selectedApplication.photo_url ? (
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="mt-1 w-full"
+                        asChild
+                      >
+                        <a href={selectedApplication.photo_url} target="_blank" rel="noopener noreferrer">
+                          <Download className="h-4 w-4 mr-2" />
+                          View Photo
+                        </a>
+                      </Button>
+                    ) : (
+                      <div className="mt-1 p-2 border border-dashed border-gray-300 rounded text-center text-sm text-gray-500">
+                        No photo uploaded
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
