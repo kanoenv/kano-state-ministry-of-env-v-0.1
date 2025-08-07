@@ -2,7 +2,14 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { createDefaultAdmin } from '@/utils/createDefaultAdmin';
+import { 
+  storeSecureSession, 
+  getSecureSession, 
+  clearSecureSession, 
+  validateSessionWithDatabase,
+  validatePassword,
+  validateEmail 
+} from '@/utils/secureAuth';
 
 type AdminRole = 'super_admin' | 'content_admin' | 'reports_admin';
 
@@ -45,8 +52,8 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Auto-logout after 10 minutes of inactivity
-  const AUTO_LOGOUT_TIME = 10 * 60 * 1000; // 10 minutes in milliseconds
+  // Auto-logout after 2 hours of inactivity (more secure)
+  const AUTO_LOGOUT_TIME = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
 
   const resetSessionTimer = () => {
     if (sessionTimer) {
@@ -61,11 +68,11 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
   };
 
   const handleAutoLogout = async () => {
-    console.log('Auto-logout triggered after 10 minutes of inactivity');
+    console.log('Auto-logout triggered after 2 hours of inactivity');
     await logout();
     toast({
       title: "Session Expired",
-      description: "You have been logged out due to inactivity",
+      description: "You have been logged out due to inactivity (2 hours)",
       variant: "destructive"
     });
   };
@@ -100,60 +107,26 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
     };
   }, [adminUser]);
 
-  // Create default admin on app start and validate session
+  // Validate secure session on app start
   useEffect(() => {
     const validateSession = async () => {
-      // First ensure default admin exists
-      await createDefaultAdmin();
+      const session = getSecureSession();
       
-      const adminSession = localStorage.getItem('adminSession');
-      const loginTime = localStorage.getItem('adminLoginTime');
-      
-      if (adminSession && loginTime) {
-        try {
-          const parsedSession = JSON.parse(adminSession);
-          const loginTimestamp = parseInt(loginTime);
-          const currentTime = Date.now();
-          
-          // Check if session is older than 10 minutes
-          if (currentTime - loginTimestamp > AUTO_LOGOUT_TIME) {
-            console.log('Session expired, clearing stored data');
-            localStorage.removeItem('adminSession');
-            localStorage.removeItem('adminLoginTime');
-            setAdminUser(null);
-            setIsLoading(false);
-            return;
-          }
-
-          // Verify session with database
-          const { data, error } = await supabase
-            .from('admin_users')
-            .select('id, email, full_name, role, is_active')
-            .eq('id', parsedSession.id)
-            .eq('is_active', true)
-            .maybeSingle();
-
-          if (error) {
-            console.error('Session validation error:', error);
-            localStorage.removeItem('adminSession');
-            localStorage.removeItem('adminLoginTime');
-            setAdminUser(null);
-          } else if (!data) {
-            console.log('No admin user found, clearing stored data');
-            localStorage.removeItem('adminSession');
-            localStorage.removeItem('adminLoginTime');
-            setAdminUser(null);
-          } else {
-            console.log('Session validated successfully');
-            setAdminUser(data as AdminUser);
-          }
-        } catch (error) {
-          console.error('Error validating session:', error);
-          localStorage.removeItem('adminSession');
-          localStorage.removeItem('adminLoginTime');
-          setAdminUser(null);
+      if (session) {
+        // Validate session with database
+        const adminData = await validateSessionWithDatabase(session);
+        if (adminData) {
+          console.log('Secure session validated successfully');
+          setAdminUser({
+            id: adminData.id,
+            email: adminData.email,
+            full_name: adminData.full_name,
+            role: adminData.role as AdminRole,
+            is_active: adminData.is_active
+          });
         }
       }
+      
       setIsLoading(false);
     };
 
@@ -163,50 +136,25 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      console.log('Attempting admin login for:', email);
+      console.log('Attempting secure admin login for:', email);
       
-      // First check if admin_users table exists and has data
-      const { data: tableCheck, error: tableError } = await supabase
-        .from('admin_users')
-        .select('count')
-        .limit(1);
-
-      if (tableError) {
-        console.error('Admin users table error:', tableError);
-        throw new Error('Admin system not properly configured. Please contact system administrator.');
+      // Validate input
+      if (!validateEmail(email)) {
+        throw new Error('Please enter a valid email address');
+      }
+      
+      if (!password || password.length < 8) {
+        throw new Error('Password must be at least 8 characters long');
       }
 
-      // Try direct query first for debugging
-      const { data: directData, error: directError } = await supabase
-        .from('admin_users')
-        .select('id, email, full_name, role, is_active, password_hash')
-        .eq('email', email)
-        .eq('is_active', true)
-        .maybeSingle();
-
-      console.log('Direct query result:', { directData, directError });
-
-      if (directError) {
-        console.error('Direct query error:', directError);
-        throw new Error('Database query failed. Please try again.');
-      }
-
-      if (!directData) {
-        throw new Error('Invalid email or password');
-      }
-
-      // Try the RPC function for password verification
+      // Use the secure RPC function for password verification
       const { data: rpcData, error: rpcError } = await supabase.rpc('verify_admin_login', {
         admin_email: email,
         admin_password: password
       });
 
-      console.log('RPC login response:', { rpcData, rpcError });
-
       if (rpcError) {
-        console.error('RPC login error:', rpcError);
-        // If RPC fails, try manual password check (for debugging)
-        console.log('RPC failed, this might be a password verification issue');
+        console.error('Login error:', rpcError);
         throw new Error('Invalid email or password');
       }
 
@@ -215,7 +163,6 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
       }
 
       const adminData = rpcData[0];
-      console.log('Admin data from RPC:', adminData);
       
       if (!adminData.is_active) {
         throw new Error('Account is inactive. Please contact administrator.');
@@ -229,10 +176,8 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
         is_active: adminData.is_active
       };
 
-      // Store session in localStorage with timestamp
-      const loginTime = Date.now().toString();
-      localStorage.setItem('adminSession', JSON.stringify(adminUser));
-      localStorage.setItem('adminLoginTime', loginTime);
+      // Store secure session
+      storeSecureSession(adminUser);
       setAdminUser(adminUser);
 
       // Update last login
@@ -242,8 +187,8 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
         .eq('id', adminData.id);
 
       toast({
-        title: "Success",
-        description: "Logged in successfully",
+        title: "Login Successful",
+        description: "Welcome back to the admin portal",
       });
       
       navigate('/admin/dashboard');
@@ -263,7 +208,21 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
   const register = async (email: string, password: string, fullName: string, role: AdminRole) => {
     setIsLoading(true);
     try {
-      console.log('Creating admin user:', { email, role, fullName });
+      console.log('Creating secure admin user:', { email, role, fullName });
+      
+      // Validate input
+      if (!validateEmail(email)) {
+        throw new Error('Please enter a valid email address');
+      }
+      
+      const passwordValidation = validatePassword(password);
+      if (!passwordValidation.isValid) {
+        throw new Error(passwordValidation.message);
+      }
+      
+      if (!fullName || fullName.trim().length < 2) {
+        throw new Error('Full name must be at least 2 characters long');
+      }
       
       // Check if user already exists first
       const { data: existingUser, error: checkError } = await supabase
@@ -281,15 +240,13 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
         throw new Error('Admin user with this email already exists');
       }
 
-      // Create admin user using the database function
+      // Create admin user using the secure database function
       const { data, error } = await supabase.rpc('create_admin_user', {
         admin_email: email,
         admin_password: password,
-        admin_name: fullName,
+        admin_name: fullName.trim(),
         admin_role_param: role
       });
-
-      console.log('Registration response:', { data, error });
 
       if (error) {
         console.error('Registration error:', error);
@@ -297,8 +254,8 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
       }
 
       toast({
-        title: "Success",
-        description: "Admin account created successfully",
+        title: "Account Created",
+        description: "Secure admin account created successfully",
       });
     } catch (error) {
       console.error('Registration error:', error);
@@ -321,14 +278,13 @@ export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
         setSessionTimer(null);
       }
 
-      // Clear stored session data
-      localStorage.removeItem('adminSession');
-      localStorage.removeItem('adminLoginTime');
+      // Clear secure session data
+      clearSecureSession();
       setAdminUser(null);
       
       toast({
-        title: "Success",
-        description: "Logged out successfully",
+        title: "Logged Out",
+        description: "You have been securely logged out",
       });
       
       navigate('/admin-login');
